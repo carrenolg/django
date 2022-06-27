@@ -6,20 +6,15 @@ from django.template.loader import render_to_string
 list_challenges = {
     "may": "May - Walk for at least 20 minutes every day!",
     "june": "June - Walk for at least 20 minutes every day!",
+    "december": None,
 }
 
 # Create your views here.
 def index(request):
-    list_item = ""
     months = list(list_challenges.keys())
-
-    for month in months:
-        capitalized_month = month.capitalize()
-        month_path = reverse("month-challenge", args=[month])
-        list_item += f"<li><a href=\"{month_path}\">{capitalized_month}</a></li>"
-    
-    response_data = f"<ul>{list_item}</ul>"
-    return HttpResponse(response_data)
+    return render(request, "index.html", {
+        "months": months
+    })
 
 def january(request):
     return HttpResponse("Eat no met for the entire month!")
@@ -36,6 +31,9 @@ def monthly_challenge_by_number(request, month):
 def monthly_challenge(request, month):
     try:
         challenge_text = list_challenges[month]
-        return render(request, "challenges/challenge.html")
+        return render(request, "challenges/challenge.html", {
+            "text": challenge_text,
+            "month": month
+        })
     except:
         return HttpResponseNotFound("This month is not supported!")
