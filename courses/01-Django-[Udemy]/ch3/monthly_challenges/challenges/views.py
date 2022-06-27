@@ -34,13 +34,8 @@ def monthly_challenge_by_number(request, month):
     return HttpResponseRedirect(redirect_path)
 
 def monthly_challenge(request, month):
-    challenge_text = list_challenges[month]
-    response_data = render_to_string("challenges/challenge.html")
-    return HttpResponse(response_data)
-""" challenge_text = None
     try:
         challenge_text = list_challenges[month]
-        response_data = f"<h1>{challenge_text}</h1>"
-        return HttpResponse(response_data)
+        return render(request, "challenges/challenge.html")
     except:
-        return HttpResponseNotFound("This month is not supported!") """
+        return HttpResponseNotFound("This month is not supported!")
